@@ -1,0 +1,2 @@
+(this["webpackJsonpgoit-react-hw-04-hooks-images"]=this["webpackJsonpgoit-react-hw-04-hooks-images"]||[]).push([[0],{10:function(e,t,n){"use strict";n.r(t);var c=n(0),o=n(1),r=n.n(o),s=n(3),i=n.n(s);n(9);function h(){return Object(c.jsx)(c.Fragment,{children:Object(c.jsx)("h1",{children:"App"})})}i.a.render(Object(c.jsx)(r.a.StrictMode,{children:Object(c.jsx)(h,{})}),document.getElementById("root"))},9:function(e,t,n){}},[[10,1,2]]]);
+//# sourceMappingURL=main.8309c02d.chunk.js.map
