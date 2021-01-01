@@ -1,8 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useParams, NavLink, Route, useRouteMatch } from 'react-router-dom';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
-import Cast from '../Cast';
-import Reviews from '../Reviews';
+
+// Статические импорты
+// import Cast from '../Cast';
+// import Reviews from '../Reviews';
+
+// Динамические импорты
+const Cast = lazy(() => import('../Cast' /* webpackChunkName: "cast" */));
+const Reviews = lazy(() =>
+    import('../Reviews' /* webpackChunkName: "reviews" */),
+);
 
 export default function MovieDetailsPage() {
     const { movieId } = useParams();
@@ -45,13 +53,15 @@ export default function MovieDetailsPage() {
                 </>
             )}
 
-            <Route path={`${path}/cast`}>
-                <Cast movieId={movieId} />
-            </Route>
+            <Suspense fallback={<h1>Загружаем...</h1>}>
+                <Route path={`${path}/cast`}>
+                    <Cast movieId={movieId} />
+                </Route>
 
-            <Route path={`${path}/reviews`}>
-                <Reviews movieId={movieId} />
-            </Route>
+                <Route path={`${path}/reviews`}>
+                    <Reviews movieId={movieId} />
+                </Route>
+            </Suspense>
         </>
     );
 }

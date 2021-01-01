@@ -5,31 +5,49 @@
 //     REJECTED: 'rejected',
 // };
 
+import { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import AppBar from './components/AppBar';
 // import Container from './components/Container';
-import HomePage from './views/HomePage';
-import MoviesPage from './views/MoviesPage';
-import MovieDetailsPage from './views/MovieDetailsPage';
+
+// Статические импорты
+// import HomePage from './views/HomePage';
+// import MoviesPage from './views/MoviesPage';
+// import MovieDetailsPage from './views/MovieDetailsPage';
+
+// Динамические импорты
+const HomePage = lazy(() =>
+    import('./views/HomePage' /* webpackChunkName: "home-page" */),
+);
+const MoviesPage = lazy(() =>
+    import('./views/MoviesPage' /* webpackChunkName: "movies-page" */),
+);
+const MovieDetailsPage = lazy(() =>
+    import(
+        './views/MovieDetailsPage' /* webpackChunkName: "movie-details-page" */
+    ),
+);
 
 export default function App() {
     return (
         <>
             <AppBar />
 
-            <Switch>
-                <Route path="/" exact>
-                    <HomePage />
-                </Route>
+            <Suspense fallback={<h1>Загружаем...</h1>}>
+                <Switch>
+                    <Route path="/" exact>
+                        <HomePage />
+                    </Route>
 
-                <Route path="/movie" exact>
-                    <MoviesPage />
-                </Route>
+                    <Route path="/movie" exact>
+                        <MoviesPage />
+                    </Route>
 
-                <Route path="/movie/:movieId">
-                    <MovieDetailsPage />
-                </Route>
-            </Switch>
+                    <Route path="/movie/:movieId">
+                        <MovieDetailsPage />
+                    </Route>
+                </Switch>
+            </Suspense>
         </>
     );
 }
