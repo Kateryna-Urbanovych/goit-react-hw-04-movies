@@ -27,7 +27,12 @@ export default function HomePage() {
                             <Link
                                 to={{
                                     pathname: `${url}movies/${id}`,
-                                    state: { from: location },
+                                    state: {
+                                        from: {
+                                            location,
+                                            label: 'GO BACK to Tranding',
+                                        },
+                                    },
                                 }}
                             >
                                 {title}

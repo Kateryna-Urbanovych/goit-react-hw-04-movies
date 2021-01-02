@@ -62,7 +62,12 @@ export default function MoviesPage() {
                             <Link
                                 to={{
                                     pathname: `${url}/${id}`,
-                                    state: { from: location },
+                                    state: {
+                                        from: {
+                                            location,
+                                            label: `GO BACK to Search <${searchMovie}>`,
+                                        },
+                                    },
                                 }}
                             >
                                 {title}

@@ -33,7 +33,7 @@ export default function MovieDetailsPage() {
     }, [movieId]);
 
     const onGoBack = () => {
-        history.push(location?.state?.from ?? '/');
+        history.push(location?.state?.from?.location ?? '/');
     };
 
     return (
@@ -41,7 +41,7 @@ export default function MovieDetailsPage() {
             {movie && (
                 <>
                     <button type="button" onClick={onGoBack}>
-                        Go back
+                        {location?.state?.from?.label ?? 'GO BACK'}
                     </button>
                     <hr />
                     <img
