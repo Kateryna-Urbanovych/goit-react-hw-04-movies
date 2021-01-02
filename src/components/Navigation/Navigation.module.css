@@ -1,10 +1,10 @@
 .link {
     display: inline-block;
     text-decoration: none;
-    padding: 12px;
+    padding: 20px;
     font-weight: 700;
     color: #2a363b;
-    font-size: 20px;
+    font-size: 25px;
 }
 
 .activeLink {

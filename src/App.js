@@ -8,7 +8,7 @@
 import { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import AppBar from './components/AppBar';
-// import Container from './components/Container';
+import Container from './components/Container';
 
 // Статические импорты
 // import HomePage from './views/HomePage';
@@ -30,7 +30,7 @@ const MovieDetailsPage = lazy(() =>
 
 export default function App() {
     return (
-        <>
+        <Container>
             <AppBar />
 
             <Suspense fallback={<h1>Загружаем...</h1>}>
@@ -39,15 +39,15 @@ export default function App() {
                         <HomePage />
                     </Route>
 
-                    <Route path="/movie" exact>
+                    <Route path="/movies" exact>
                         <MoviesPage />
                     </Route>
 
-                    <Route path="/movie/:movieId">
+                    <Route path="/movies/:movieId">
                         <MovieDetailsPage />
                     </Route>
                 </Switch>
             </Suspense>
-        </>
+        </Container>
     );
 }

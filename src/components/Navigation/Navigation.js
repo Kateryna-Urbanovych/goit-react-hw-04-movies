@@ -13,7 +13,7 @@ export default function Navigation() {
                 Home
             </NavLink>
             <NavLink
-                to="/movie"
+                to="/movies"
                 className={s.link}
                 activeClassName={s.activeLink}
             >

@@ -1,5 +1,12 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import { useParams, NavLink, Route, useRouteMatch } from 'react-router-dom';
+import {
+    useParams,
+    NavLink,
+    Route,
+    useRouteMatch,
+    useLocation,
+    useHistory,
+} from 'react-router-dom';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
 
 // Статические импорты
@@ -13,6 +20,10 @@ const Reviews = lazy(() =>
 );
 
 export default function MovieDetailsPage() {
+    const location = useLocation();
+    console.log('MovieDetailsPage', location);
+    const history = useHistory();
+    // console.log(history);
     const { movieId } = useParams();
     const { url, path } = useRouteMatch();
     const [movie, setMovie] = useState(null);
@@ -21,10 +32,18 @@ export default function MovieDetailsPage() {
         theMovieDbAPI.fetchMovieById(movieId).then(setMovie);
     }, [movieId]);
 
+    const onGoBack = () => {
+        history.push(location?.state?.from ?? '/');
+    };
+
     return (
         <>
             {movie && (
                 <>
+                    <button type="button" onClick={onGoBack}>
+                        Go back
+                    </button>
+                    <hr />
                     <img
                         src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                         alt={movie.title}
@@ -44,10 +63,28 @@ export default function MovieDetailsPage() {
                     <p>Additional information</p>
                     <ul>
                         <li>
-                            <NavLink to={`${url}/cast`}>Cast</NavLink>
+                            <NavLink
+                                to={{
+                                    pathname: `${url}/cast`,
+                                    state: {
+                                        from: location?.state?.from ?? '/',
+                                    },
+                                }}
+                            >
+                                Cast
+                            </NavLink>
                         </li>
                         <li>
-                            <NavLink to={`${url}/reviews`}>Reviews</NavLink>
+                            <NavLink
+                                to={{
+                                    pathname: `${url}/reviews`,
+                                    state: {
+                                        from: location?.state?.from ?? '/',
+                                    },
+                                }}
+                            >
+                                Reviews
+                            </NavLink>
                         </li>
                     </ul>
                 </>

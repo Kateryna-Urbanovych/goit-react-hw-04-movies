@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, useRouteMatch, useLocation } from 'react-router-dom';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
 
 export default function HomePage() {
+    const location = useLocation();
+    // console.log('HomePage', location);
     const { url } = useRouteMatch();
     // console.log(url);
     const [trendingMovies, setTrendingMovies] = useState(null);
@@ -22,7 +24,14 @@ export default function HomePage() {
                 trendingMovies.map(({ id, title }) => (
                     <ul>
                         <li key={id}>
-                            <Link to={`${url}movie/${id}`}>{title}</Link>
+                            <Link
+                                to={{
+                                    pathname: `${url}movies/${id}`,
+                                    state: { from: location },
+                                }}
+                            >
+                                {title}
+                            </Link>
                         </li>
                     </ul>
                 ))}
