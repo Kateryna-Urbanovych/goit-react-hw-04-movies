@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useRouteMatch, useLocation } from 'react-router-dom';
+import slugify from 'slugify';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
+
+const makeSlug = string => slugify(string, { lower: true });
 
 export default function HomePage() {
     const location = useLocation();
@@ -26,7 +29,9 @@ export default function HomePage() {
                         <li key={id}>
                             <Link
                                 to={{
-                                    pathname: `${url}movies/${id}`,
+                                    pathname: `${url}movies/${makeSlug(
+                                        `${title} ${id}`,
+                                    )}`,
                                     state: {
                                         from: {
                                             location,
