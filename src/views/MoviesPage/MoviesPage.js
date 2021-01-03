@@ -4,12 +4,7 @@ import { toast } from 'react-toastify';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
 import MakeSlug from '../../components/Slug';
 import Loader from '../../components/Loader';
-
-const Status = {
-    PENDING: 'pending',
-    RESOLVED: 'resolved',
-    REJECTED: 'rejected',
-};
+import Status from '../../components/Status';
 
 export default function MoviesPage() {
     const [status, setStatus] = useState(null);

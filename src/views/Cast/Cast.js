@@ -1,14 +1,8 @@
 import { useState, useEffect } from 'react';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
 import Loader from '../../components/Loader';
+import Status from '../../components/Status';
 import imageNotFound from '../../images/image-not-found.jpg';
-
-const Status = {
-    IDLE: 'idle',
-    PENDING: 'pending',
-    RESOLVED: 'resolved',
-    REJECTED: 'rejected',
-};
 
 export default function Cast({ movieId }) {
     const [status, setStatus] = useState(null);

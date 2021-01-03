@@ -1,13 +1,7 @@
 import { useState, useEffect } from 'react';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
 import Loader from '../../components/Loader';
-
-const Status = {
-    IDLE: 'idle',
-    PENDING: 'pending',
-    RESOLVED: 'resolved',
-    REJECTED: 'rejected',
-};
+import Status from '../../components/Status';
 
 export default function Reviews({ movieId }) {
     const [status, setStatus] = useState(null);

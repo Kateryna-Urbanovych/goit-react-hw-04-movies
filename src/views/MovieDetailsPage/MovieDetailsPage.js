@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
 import Loader from '../../components/Loader';
+import Status from '../../components/Status';
 
 // Статические импорты
 // import Cast from '../Cast';
@@ -19,12 +20,6 @@ const Cast = lazy(() => import('../Cast' /* webpackChunkName: "cast" */));
 const Reviews = lazy(() =>
     import('../Reviews' /* webpackChunkName: "reviews" */),
 );
-
-const Status = {
-    PENDING: 'pending',
-    RESOLVED: 'resolved',
-    REJECTED: 'rejected',
-};
 
 export default function MovieDetailsPage() {
     const [status, setStatus] = useState(null);
