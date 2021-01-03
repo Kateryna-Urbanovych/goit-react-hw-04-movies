@@ -1,16 +1,24 @@
 import { useState, useEffect } from 'react';
 import { Link, useRouteMatch, useHistory, useLocation } from 'react-router-dom';
-import slugify from 'slugify';
+import { toast } from 'react-toastify';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
+import MakeSlug from '../../components/Slug';
+import Loader from '../../components/Loader';
 
-const makeSlug = string => slugify(string, { lower: true });
+const Status = {
+    PENDING: 'pending',
+    RESOLVED: 'resolved',
+    REJECTED: 'rejected',
+};
 
 export default function MoviesPage() {
+    const [status, setStatus] = useState(Status.PENDING);
+    const [error, setError] = useState(null);
+
     const [movieQuery, setMovieQuery] = useState('');
     const [movies, setMovies] = useState(null);
 
     const { url } = useRouteMatch();
-    // console.log(url);
 
     const history = useHistory();
     const location = useLocation();
@@ -24,8 +32,8 @@ export default function MoviesPage() {
         event.preventDefault();
 
         if (movieQuery.trim() === '') {
-            return window.alert('Please, write some request');
-            // return toast.info('Please, write some request');
+            // return window.alert('Please, write some request');
+            return toast.warning('Please, write some request');
         }
 
         history.push({ ...location, search: `query=${movieQuery}` });
@@ -39,9 +47,17 @@ export default function MoviesPage() {
             return;
         }
 
-        theMovieDbAPI
-            .fetchMovieByName(searchMovie)
-            .then(({ results }) => setMovies(results));
+        setStatus(Status.PENDING);
+
+        theMovieDbAPI.fetchMovieByName(searchMovie).then(({ results }) => {
+            // if (results.length === 0) {
+            //     return toast.error(
+            //         `Sorry, no movies found on request ${searchMovie}`,
+            //     );
+            // }
+            setMovies(results);
+            setStatus(Status.RESOLVED);
+        });
     }, [searchMovie]);
 
     return (
@@ -58,28 +74,34 @@ export default function MoviesPage() {
                 <button type="submit">Search</button>
             </form>
 
-            {movies &&
-                movies.map(({ id, title }) => (
-                    <ul>
-                        <li key={id}>
-                            <Link
-                                to={{
-                                    pathname: `${url}/${makeSlug(
-                                        `${title} ${id}`,
-                                    )}`,
-                                    state: {
-                                        from: {
-                                            location,
-                                            label: `GO BACK to Search <${searchMovie}>`,
-                                        },
-                                    },
-                                }}
-                            >
-                                {title}
-                            </Link>
-                        </li>
-                    </ul>
-                ))}
+            {status === Status.PENDING && <Loader />}
+
+            {status === Status.RESOLVED && (
+                <>
+                    {movies &&
+                        movies.map(({ id, title }) => (
+                            <ul>
+                                <li key={id}>
+                                    <Link
+                                        to={{
+                                            pathname: `${url}/${MakeSlug(
+                                                `${title} ${id}`,
+                                            )}`,
+                                            state: {
+                                                from: {
+                                                    location,
+                                                    label: `GO BACK to Search <${searchMovie}>`,
+                                                },
+                                            },
+                                        }}
+                                    >
+                                        {title}
+                                    </Link>
+                                </li>
+                            </ul>
+                        ))}
+                </>
+            )}
         </>
     );
 }

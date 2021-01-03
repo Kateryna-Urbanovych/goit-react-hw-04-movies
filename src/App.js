@@ -10,6 +10,9 @@ import { Route, Switch } from 'react-router-dom';
 import AppBar from './components/AppBar';
 import Container from './components/Container';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // Статические импорты
 // import HomePage from './views/HomePage';
 // import MoviesPage from './views/MoviesPage';
@@ -31,6 +34,7 @@ const MovieDetailsPage = lazy(() =>
 export default function App() {
     return (
         <Container>
+            <ToastContainer />
             <AppBar />
 
             <Suspense fallback={<h1>Загружаем...</h1>}>
