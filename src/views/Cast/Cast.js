@@ -1,35 +1,72 @@
 import { useState, useEffect } from 'react';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
+import Loader from '../../components/Loader';
 import imageNotFound from '../../images/image-not-found.jpg';
 
+const Status = {
+    IDLE: 'idle',
+    PENDING: 'pending',
+    RESOLVED: 'resolved',
+    REJECTED: 'rejected',
+};
+
 export default function Cast({ movieId }) {
+    const [status, setStatus] = useState(null);
+    const [error, setError] = useState(null);
     const [cast, setCast] = useState(null);
 
     useEffect(() => {
-        theMovieDbAPI.fetchMovieCast(movieId).then(({ cast }) => setCast(cast));
+        setStatus(Status.PENDING);
+
+        theMovieDbAPI
+            .fetchMovieCast(movieId)
+            .then(({ cast }) => {
+                if (cast.length === 0) {
+                    setStatus(Status.IDLE);
+                    return;
+                }
+
+                setCast(cast);
+                setStatus(Status.RESOLVED);
+            })
+            .catch(error => {
+                setError(error);
+                setStatus(Status.REJECTED);
+            });
     }, [movieId]);
 
     // если cast нет - показать текст с ошибкой
     return (
         <>
-            {cast &&
-                cast.map(({ id, profile_path, name, character }) => (
-                    <ul>
-                        <li key={id}>
-                            <img
-                                src={
-                                    profile_path
-                                        ? `https://image.tmdb.org/t/p/w500${profile_path}`
-                                        : imageNotFound
-                                }
-                                alt={name}
-                                width="100"
-                            />
-                            <p>{name}</p>
-                            <p>Character: {character}</p>
-                        </li>
-                    </ul>
-                ))}
+            {status === Status.IDLE && (
+                <p>We don't have any cast for this movie.</p>
+            )}
+
+            {status === Status.PENDING && <Loader />}
+
+            {status === Status.RESOLVED && (
+                <>
+                    {cast.map(({ id, profile_path, name, character }) => (
+                        <ul>
+                            <li key={id}>
+                                <img
+                                    src={
+                                        profile_path
+                                            ? `https://image.tmdb.org/t/p/w500${profile_path}`
+                                            : imageNotFound
+                                    }
+                                    alt={name}
+                                    width="100"
+                                />
+                                <p>{name}</p>
+                                <p>Character: {character}</p>
+                            </li>
+                        </ul>
+                    ))}
+                </>
+            )}
+
+            {status === Status.REJECTED && <p>{error.message}</p>}
         </>
     );
 }

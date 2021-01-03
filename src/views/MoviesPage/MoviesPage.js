@@ -12,7 +12,7 @@ const Status = {
 };
 
 export default function MoviesPage() {
-    const [status, setStatus] = useState(Status.PENDING);
+    const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);
 
     const [movieQuery, setMovieQuery] = useState('');
@@ -32,7 +32,6 @@ export default function MoviesPage() {
         event.preventDefault();
 
         if (movieQuery.trim() === '') {
-            // return window.alert('Please, write some request');
             return toast.warning('Please, write some request');
         }
 
@@ -49,15 +48,23 @@ export default function MoviesPage() {
 
         setStatus(Status.PENDING);
 
-        theMovieDbAPI.fetchMovieByName(searchMovie).then(({ results }) => {
-            // if (results.length === 0) {
-            //     return toast.error(
-            //         `Sorry, no movies found on request ${searchMovie}`,
-            //     );
-            // }
-            setMovies(results);
-            setStatus(Status.RESOLVED);
-        });
+        theMovieDbAPI
+            .fetchMovieByName(searchMovie)
+            .then(({ results }) => {
+                if (results.length === 0) {
+                    setStatus(null);
+                    return toast.error(
+                        `Sorry, no movies found on request "${searchMovie}"`,
+                    );
+                }
+
+                setMovies(results);
+                setStatus(Status.RESOLVED);
+            })
+            .catch(error => {
+                setError(error);
+                setStatus(Status.REJECTED);
+            });
     }, [searchMovie]);
 
     return (
@@ -78,30 +85,31 @@ export default function MoviesPage() {
 
             {status === Status.RESOLVED && (
                 <>
-                    {movies &&
-                        movies.map(({ id, title }) => (
-                            <ul>
-                                <li key={id}>
-                                    <Link
-                                        to={{
-                                            pathname: `${url}/${MakeSlug(
-                                                `${title} ${id}`,
-                                            )}`,
-                                            state: {
-                                                from: {
-                                                    location,
-                                                    label: `GO BACK to Search <${searchMovie}>`,
-                                                },
+                    {movies.map(({ id, title }) => (
+                        <ul>
+                            <li key={id}>
+                                <Link
+                                    to={{
+                                        pathname: `${url}/${MakeSlug(
+                                            `${title} ${id}`,
+                                        )}`,
+                                        state: {
+                                            from: {
+                                                location,
+                                                label: `GO BACK to Search <${searchMovie}>`,
                                             },
-                                        }}
-                                    >
-                                        {title}
-                                    </Link>
-                                </li>
-                            </ul>
-                        ))}
+                                        },
+                                    }}
+                                >
+                                    {title}
+                                </Link>
+                            </li>
+                        </ul>
+                    ))}
                 </>
             )}
+
+            {status === Status.REJECTED && <p>{error.message}</p>}
         </>
     );
 }

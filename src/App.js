@@ -1,14 +1,8 @@
-// const Status = {
-//     IDLE: 'idle',
-//     PENDING: 'pending',
-//     RESOLVED: 'resolved',
-//     REJECTED: 'rejected',
-// };
-
 import { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import AppBar from './components/AppBar';
 import Container from './components/Container';
+import Loader from './components/Loader';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -37,7 +31,7 @@ export default function App() {
             <ToastContainer />
             <AppBar />
 
-            <Suspense fallback={<h1>Загружаем...</h1>}>
+            <Suspense fallback={<Loader />}>
                 <Switch>
                     <Route path="/" exact>
                         <HomePage />

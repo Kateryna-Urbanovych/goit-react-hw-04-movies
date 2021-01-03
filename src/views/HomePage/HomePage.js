@@ -11,7 +11,7 @@ const Status = {
 };
 
 export default function HomePage() {
-    const [status, setStatus] = useState(Status.PENDING);
+    const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);
 
     const location = useLocation();
@@ -41,29 +41,27 @@ export default function HomePage() {
 
             {status === Status.RESOLVED && (
                 <>
-                    {trendingMovies &&
-                        trendingMovies.map(({ id, title }) => (
-                            <ul>
-                                <li key={id}>
-                                    <Link
-                                        to={{
-                                            pathname: `${url}movies/${MakeSlug(
-                                                `${title} ${id}`,
-                                            )}`,
-                                            state: {
-                                                from: {
-                                                    location,
-                                                    label:
-                                                        'GO BACK to Tranding',
-                                                },
+                    {trendingMovies.map(({ id, title }) => (
+                        <ul>
+                            <li key={id}>
+                                <Link
+                                    to={{
+                                        pathname: `${url}movies/${MakeSlug(
+                                            `${title} ${id}`,
+                                        )}`,
+                                        state: {
+                                            from: {
+                                                location,
+                                                label: 'GO BACK to Tranding',
                                             },
-                                        }}
-                                    >
-                                        {title}
-                                    </Link>
-                                </li>
-                            </ul>
-                        ))}
+                                        },
+                                    }}
+                                >
+                                    {title}
+                                </Link>
+                            </li>
+                        </ul>
+                    ))}
                 </>
             )}
 

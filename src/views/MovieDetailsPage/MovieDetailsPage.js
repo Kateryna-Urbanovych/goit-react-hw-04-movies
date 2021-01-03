@@ -8,6 +8,7 @@ import {
     useHistory,
 } from 'react-router-dom';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
+import Loader from '../../components/Loader';
 
 // Статические импорты
 // import Cast from '../Cast';
@@ -19,7 +20,16 @@ const Reviews = lazy(() =>
     import('../Reviews' /* webpackChunkName: "reviews" */),
 );
 
+const Status = {
+    PENDING: 'pending',
+    RESOLVED: 'resolved',
+    REJECTED: 'rejected',
+};
+
 export default function MovieDetailsPage() {
+    const [status, setStatus] = useState(null);
+    const [error, setError] = useState(null);
+
     const location = useLocation();
     const history = useHistory();
 
@@ -30,7 +40,18 @@ export default function MovieDetailsPage() {
     const [movie, setMovie] = useState(null);
 
     useEffect(() => {
-        theMovieDbAPI.fetchMovieById(movieId).then(setMovie);
+        setStatus(Status.PENDING);
+
+        theMovieDbAPI
+            .fetchMovieById(movieId)
+            .then(movie => {
+                setMovie(movie);
+                setStatus(Status.RESOLVED);
+            })
+            .catch(error => {
+                setError(error);
+                setStatus(Status.REJECTED);
+            });
     }, [movieId]);
 
     const onGoBack = () => {
@@ -39,7 +60,9 @@ export default function MovieDetailsPage() {
 
     return (
         <>
-            {movie && (
+            {status === Status.PENDING && <Loader />}
+
+            {status === Status.RESOLVED && (
                 <>
                     <button type="button" onClick={onGoBack}>
                         {location?.state?.from?.label ?? 'GO BACK'}
@@ -91,7 +114,9 @@ export default function MovieDetailsPage() {
                 </>
             )}
 
-            <Suspense fallback={<h1>Загружаем...</h1>}>
+            {status === Status.REJECTED && <p>{error.message}</p>}
+
+            <Suspense fallback={<Loader />}>
                 <Route path={`${path}/cast`}>
                     <Cast movieId={movieId} />
                 </Route>
