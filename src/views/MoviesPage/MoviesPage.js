@@ -5,6 +5,7 @@ import * as theMovieDbAPI from '../../servises/themoviedb-api';
 import MakeSlug from '../../components/Slug';
 import Loader from '../../components/Loader';
 import Status from '../../components/Status';
+import noResultsFound from '../../images/no_results_found.jpg';
 
 export default function MoviesPage() {
     const [status, setStatus] = useState(null);
@@ -47,10 +48,8 @@ export default function MoviesPage() {
             .fetchMovieByName(searchMovie)
             .then(({ results }) => {
                 if (results.length === 0) {
-                    setStatus(null);
-                    return toast.error(
-                        `Sorry, no movies found on request "${searchMovie}"`,
-                    );
+                    setStatus(Status.IDLE);
+                    return;
                 }
 
                 setMovies(results);
@@ -75,6 +74,10 @@ export default function MoviesPage() {
                 />
                 <button type="submit">Search</button>
             </form>
+
+            {status === Status.IDLE && (
+                <img src={noResultsFound} alt="No results found" />
+            )}
 
             {status === Status.PENDING && <Loader />}
 

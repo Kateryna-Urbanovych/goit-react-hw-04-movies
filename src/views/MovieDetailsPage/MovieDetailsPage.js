@@ -10,6 +10,7 @@ import {
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
 import Loader from '../../components/Loader';
 import Status from '../../components/Status';
+import noMoviePoster from '../../images/no_movie_poster.jpg';
 
 // Статические импорты
 // import Cast from '../Cast';
@@ -64,7 +65,11 @@ export default function MovieDetailsPage() {
                     </button>
                     <hr />
                     <img
-                        src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                        src={
+                            movie.poster_path
+                                ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                                : noMoviePoster
+                        }
                         alt={movie.title}
                         width="250"
                     />
