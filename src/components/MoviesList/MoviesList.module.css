@@ -1,4 +1,4 @@
-/* .moviesList {
+.moviesList {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -16,14 +16,9 @@
 .moviesCard:hover,
 .moviesCard:focus {
     transform: scale(1.05);
-} */
-
-.caption {
-    margin-bottom: 20px;
-    text-align: center;
 }
 
-/* .moviesImage {
+.moviesImage {
     border-radius: 5px;
     margin-bottom: 5px;
     height: 450px;
@@ -36,4 +31,4 @@
     line-height: 1.5;
     color: #2a363b;
     text-shadow: 0 0 15px #2a363b;
-} */
+}
