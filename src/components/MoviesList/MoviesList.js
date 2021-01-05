@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import MakeSlug from '../Slug';
 import s from './MoviesList.module.css';
@@ -34,3 +35,16 @@ export default function MoviesList({ movies, basicUrl, location, label }) {
         </ul>
     );
 }
+
+MoviesList.propTypes = {
+    movies: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            title: PropTypes.string.isRequired,
+            poster_path: PropTypes.string.isRequired,
+        }),
+    ),
+    basicUrl: PropTypes.string.isRequired,
+    location: PropTypes.object.isRequired,
+    label: PropTypes.string.isRequired,
+};

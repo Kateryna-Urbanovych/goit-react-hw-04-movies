@@ -1,39 +1,4 @@
-/* .moviesList {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: -10px;
-}
-
-.moviesCard {
-    cursor: pointer;
-    margin: 10px;
-    flex-basis: calc((100% - 4 * 20px) / 4);
-    transition: transform 250ms linear;
-    transform: scale(1);
-}
-
-.moviesCard:hover,
-.moviesCard:focus {
-    transform: scale(1.05);
-} */
-
 .caption {
     margin-bottom: 20px;
     text-align: center;
 }
-
-/* .moviesImage {
-    border-radius: 5px;
-    margin-bottom: 5px;
-    height: 450px;
-}
-
-.moviesTitle {
-    font-family: Roboto, sans-serif;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 1.5;
-    color: #2a363b;
-    text-shadow: 0 0 15px #2a363b;
-} */

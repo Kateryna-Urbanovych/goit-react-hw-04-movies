@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { useRouteMatch, useHistory, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
-import s from './MoviesPage.module.css';
 import Loader from '../../components/Loader';
 import Status from '../../components/Status';
 import noResultsFound from '../../images/no_results_found.jpg';
+import SearchForm from '../../components/SearchForm';
 import MoviesList from '../../components/MoviesList';
 
 export default function MoviesPage() {
@@ -64,20 +64,11 @@ export default function MoviesPage() {
 
     return (
         <>
-            <form onSubmit={handleSubmit} className={s.form}>
-                <input
-                    type="text"
-                    autoComplete="off"
-                    autoFocus
-                    placeholder="Search movies"
-                    value={movieQuery}
-                    onChange={handleMovieQueryChange}
-                    className={s.input}
-                />
-                <button type="submit" className={s.btnSearch}>
-                    Search
-                </button>
-            </form>
+            <SearchForm
+                onSubmit={handleSubmit}
+                movieQuery={movieQuery}
+                onChange={handleMovieQueryChange}
+            />
 
             {status === Status.IDLE && (
                 <img src={noResultsFound} alt="No results found" />
