@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const KEY = 'a85528c240511b0034c4cacb863ca798';
 const BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -37,3 +39,17 @@ export function fetchMovieReviews(movieId) {
         `${BASE_URL}/movie/${movieId}/reviews?api_key=${KEY}&language=en-US&page=1`,
     );
 }
+
+const theMovieDbAPI = {
+    fetchTrendingMovies,
+    fetchMovieById,
+    fetchMovieByName,
+    fetchMovieCast,
+    fetchMovieReviews,
+};
+
+theMovieDbAPI.propTypes = {
+    url: PropTypes.string.isRequired,
+    movieId: PropTypes.string.isRequired,
+    movieQuery: PropTypes.string.isRequired,
+};

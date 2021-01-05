@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react';
 import { Link, useRouteMatch, useHistory, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
+import style from '../HomePage/HomePage.module.css'; //сделать одним списком!!!
+import s from './MoviesPage.module.css';
 import MakeSlug from '../../components/Slug';
 import Loader from '../../components/Loader';
 import Status from '../../components/Status';
 import noResultsFound from '../../images/no_results_found.jpg';
+import noMoviePoster from '../../images/no_movie_poster.jpg';
 
 export default function MoviesPage() {
     const [status, setStatus] = useState(null);
@@ -63,7 +66,7 @@ export default function MoviesPage() {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className={s.form}>
                 <input
                     type="text"
                     autoComplete="off"
@@ -71,8 +74,11 @@ export default function MoviesPage() {
                     placeholder="Search movies"
                     value={movieQuery}
                     onChange={handleMovieQueryChange}
+                    className={s.input}
                 />
-                <button type="submit">Search</button>
+                <button type="submit" className={s.btnSearch}>
+                    Search
+                </button>
             </form>
 
             {status === Status.IDLE && (
@@ -83,9 +89,9 @@ export default function MoviesPage() {
 
             {status === Status.RESOLVED && (
                 <>
-                    {movies.map(({ id, title }) => (
-                        <ul>
-                            <li key={id}>
+                    <ul className={style.moviesList}>
+                        {movies.map(({ id, title, poster_path }) => (
+                            <li key={id} className={style.moviesCard}>
                                 <Link
                                     to={{
                                         pathname: `${url}/${MakeSlug(
@@ -99,11 +105,20 @@ export default function MoviesPage() {
                                         },
                                     }}
                                 >
-                                    {title}
+                                    <img
+                                        src={
+                                            poster_path
+                                                ? `https://image.tmdb.org/t/p/w500/${poster_path}`
+                                                : noMoviePoster
+                                        }
+                                        alt={title}
+                                        className={style.moviesImage}
+                                    />
+                                    <p className={style.moviesTitle}>{title}</p>
                                 </Link>
                             </li>
-                        </ul>
-                    ))}
+                        ))}
+                    </ul>
                 </>
             )}
 

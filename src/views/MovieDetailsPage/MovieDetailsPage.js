@@ -8,6 +8,7 @@ import {
     useHistory,
 } from 'react-router-dom';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
+import s from './MovieDetailsPage.module.css';
 import Loader from '../../components/Loader';
 import Status from '../../components/Status';
 import noMoviePoster from '../../images/no_movie_poster.jpg';
@@ -60,57 +61,69 @@ export default function MovieDetailsPage() {
 
             {status === Status.RESOLVED && (
                 <>
-                    <button type="button" onClick={onGoBack}>
+                    <button
+                        type="button"
+                        onClick={onGoBack}
+                        className={s.btnGoBack}
+                    >
                         {location?.state?.from?.label ?? 'GO BACK'}
                     </button>
+
+                    <div className={s.wrapper}>
+                        <img
+                            src={
+                                movie.poster_path
+                                    ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                                    : noMoviePoster
+                            }
+                            alt={movie.title}
+                            className={s.movieImage}
+                        />
+                        <div>
+                            <h1 className={s.movieTitle}>{movie.title}</h1>
+                            <p>User Score: {movie.vote_average * 10}%</p>
+                            <h2>Overview:</h2>
+                            <p>{movie.overview}</p>
+                            <h2>Genres:</h2>
+                            <p>
+                                {movie.genres
+                                    .map(({ name }) => name)
+                                    .join(', ')}
+                            </p>
+                        </div>
+                    </div>
+
                     <hr />
-                    <img
-                        src={
-                            movie.poster_path
-                                ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                                : noMoviePoster
-                        }
-                        alt={movie.title}
-                        width="250"
-                    />
-                    <h1>{movie.title}</h1>
-                    <p>User Score: {movie.vote_average * 10}%</p>
-                    <h2>Overview:</h2>
-                    <p>{movie.overview}</p>
-                    <h2>Genres:</h2>
-                    <p>
-                        {movie.genres.map(({ name }) => (
-                            <span>{name}</span>
-                        ))}
-                    </p>
+                    <div className={s.movieInfo}>
+                        <h2>Additional information:</h2>
+                        <ul className={s.movieLinks}>
+                            <li>
+                                <NavLink
+                                    to={{
+                                        pathname: `${url}/cast`,
+                                        state: {
+                                            from: location?.state?.from ?? '/',
+                                        },
+                                    }}
+                                >
+                                    Cast
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to={{
+                                        pathname: `${url}/reviews`,
+                                        state: {
+                                            from: location?.state?.from ?? '/',
+                                        },
+                                    }}
+                                >
+                                    Reviews
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </div>
                     <hr />
-                    <p>Additional information</p>
-                    <ul>
-                        <li>
-                            <NavLink
-                                to={{
-                                    pathname: `${url}/cast`,
-                                    state: {
-                                        from: location?.state?.from ?? '/',
-                                    },
-                                }}
-                            >
-                                Cast
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                to={{
-                                    pathname: `${url}/reviews`,
-                                    state: {
-                                        from: location?.state?.from ?? '/',
-                                    },
-                                }}
-                            >
-                                Reviews
-                            </NavLink>
-                        </li>
-                    </ul>
                 </>
             )}
 

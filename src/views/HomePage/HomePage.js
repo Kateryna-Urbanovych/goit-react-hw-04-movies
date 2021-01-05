@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useRouteMatch, useLocation } from 'react-router-dom';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
+import s from './HomePage.module.css';
 import MakeSlug from '../../components/Slug';
 import Loader from '../../components/Loader';
 import Status from '../../components/Status';
+import noMoviePoster from '../../images/no_movie_poster.jpg';
 
 export default function HomePage() {
     const [status, setStatus] = useState(null);
@@ -30,15 +32,15 @@ export default function HomePage() {
 
     return (
         <>
-            <h2>Trending today</h2>
+            <h2 className={s.caption}>Trending today</h2>
 
             {status === Status.PENDING && <Loader />}
 
             {status === Status.RESOLVED && (
                 <>
-                    {trendingMovies.map(({ id, title }) => (
-                        <ul>
-                            <li key={id}>
+                    <ul className={s.moviesList}>
+                        {trendingMovies.map(({ id, title, poster_path }) => (
+                            <li key={id} className={s.moviesCard}>
                                 <Link
                                     to={{
                                         pathname: `${url}movies/${MakeSlug(
@@ -52,11 +54,20 @@ export default function HomePage() {
                                         },
                                     }}
                                 >
-                                    {title}
+                                    <img
+                                        src={
+                                            poster_path
+                                                ? `https://image.tmdb.org/t/p/w500/${poster_path}`
+                                                : noMoviePoster
+                                        }
+                                        alt={title}
+                                        className={s.moviesImage}
+                                    />
+                                    <p className={s.moviesTitle}>{title}</p>
                                 </Link>
                             </li>
-                        </ul>
-                    ))}
+                        ))}
+                    </ul>
                 </>
             )}
 

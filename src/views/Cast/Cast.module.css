@@ -1,0 +1,23 @@
+.castList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: -10px;
+}
+
+.actorCard {
+    cursor: pointer;
+    margin: 5px;
+    flex-basis: calc((100% - 7 * 10px) / 7);
+}
+
+.actorImage {
+    border-radius: 5px;
+    margin-bottom: 5px;
+    height: 180px;
+}
+
+.actorName {
+    font-size: 18px;
+    font-weight: 600;
+}

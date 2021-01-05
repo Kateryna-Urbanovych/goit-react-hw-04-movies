@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
 import Loader from '../../components/Loader';
@@ -54,3 +55,7 @@ export default function Reviews({ movieId }) {
         </>
     );
 }
+
+Reviews.propTypes = {
+    movieId: PropTypes.string.isRequired,
+};

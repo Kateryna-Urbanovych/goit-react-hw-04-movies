@@ -3,7 +3,7 @@
 html {
     box-sizing: border-box;
     width: 100vw;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 }
 
 *,
@@ -16,7 +16,7 @@ body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
         Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-    color: #212121;
+    color: #2a363b;
     background-color: #fff;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -26,4 +26,28 @@ img {
     display: block;
     max-width: 100%;
     height: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+p {
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+a {
+    text-decoration: none;
+    color: #2a363b;
+}
+
+button {
+    cursor: pointer;
 }

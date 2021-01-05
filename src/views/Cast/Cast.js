@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
+import s from './Cast.module.css';
 import Loader from '../../components/Loader';
 import Status from '../../components/Status';
 import imageNotFound from '../../images/image_not_found.jpg';
@@ -29,7 +31,6 @@ export default function Cast({ movieId }) {
             });
     }, [movieId]);
 
-    // если cast нет - показать текст с ошибкой
     return (
         <>
             {status === Status.IDLE && (
@@ -40,9 +41,9 @@ export default function Cast({ movieId }) {
 
             {status === Status.RESOLVED && (
                 <>
-                    {cast.map(({ id, profile_path, name, character }) => (
-                        <ul>
-                            <li key={id}>
+                    <ul className={s.castList}>
+                        {cast.map(({ id, profile_path, name, character }) => (
+                            <li key={id} className={s.actorCard}>
                                 <img
                                     src={
                                         profile_path
@@ -50,13 +51,13 @@ export default function Cast({ movieId }) {
                                             : imageNotFound
                                     }
                                     alt={name}
-                                    width="100"
+                                    className={s.actorImage}
                                 />
-                                <p>{name}</p>
+                                <p className={s.actorName}>{name}</p>
                                 <p>Character: {character}</p>
                             </li>
-                        </ul>
-                    ))}
+                        ))}
+                    </ul>
                 </>
             )}
 
@@ -64,3 +65,7 @@ export default function Cast({ movieId }) {
         </>
     );
 }
+
+Cast.propTypes = {
+    movieId: PropTypes.string.isRequired,
+};

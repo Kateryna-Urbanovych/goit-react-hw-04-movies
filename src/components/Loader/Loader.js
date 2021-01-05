@@ -6,7 +6,7 @@ export default function Loader() {
     return (
         <ReactLoader
             type="Bars"
-            color="#cc0000"
+            color="#2a363b;"
             height={100}
             width={100}
             className={s.loader}
