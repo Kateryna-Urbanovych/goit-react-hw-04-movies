@@ -29,7 +29,6 @@ export default function Reviews({ movieId }) {
             });
     }, [movieId]);
 
-    // если cast нет - показать текст с ошибкой
     return (
         <>
             {status === Status.IDLE && (

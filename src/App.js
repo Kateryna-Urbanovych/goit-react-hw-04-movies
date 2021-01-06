@@ -3,7 +3,6 @@ import { Route, Switch } from 'react-router-dom';
 import AppBar from './components/AppBar';
 import Container from './components/Container';
 import Loader from './components/Loader';
-
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
