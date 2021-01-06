@@ -7,10 +7,10 @@ import {
     useHistory,
 } from 'react-router-dom';
 import * as theMovieDbAPI from '../../servises/themoviedb-api';
-import s from './MovieDetailsPage.module.css';
 import Loader from '../../components/Loader';
 import Status from '../../components/Status';
 import MovieCard from '../../components/MovieCard';
+import BtnGoBack from '../../components/BtnGoBack';
 
 // Статические импорты
 // import Cast from '../Cast';
@@ -60,14 +60,7 @@ export default function MovieDetailsPage() {
 
             {status === Status.RESOLVED && (
                 <>
-                    <button
-                        type="button"
-                        onClick={onGoBack}
-                        className={s.btnGoBack}
-                    >
-                        {location?.state?.from?.label ?? 'GO BACK'}
-                    </button>
-
+                    <BtnGoBack onClick={onGoBack} location={location} />
                     <MovieCard movie={movie} url={url} location={location} />
                 </>
             )}
