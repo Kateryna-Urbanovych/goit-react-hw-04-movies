@@ -7,13 +7,15 @@ import Status from '../../components/Status';
 import noResultsFound from '../../images/no_results_found.jpg';
 import SearchForm from '../../components/SearchForm';
 import MoviesList from '../../components/MoviesList';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 export default function MoviesPage() {
     const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);
 
     const [movieQuery, setMovieQuery] = useState('');
-    const [movies, setMovies] = useState(null);
+    const [movies, setMovies] = useState([]);
+    const [page, setPage] = useState(1);
 
     const { url } = useRouteMatch();
     const history = useHistory();
@@ -34,8 +36,11 @@ export default function MoviesPage() {
 
         history.push({ ...location, search: `query=${movieQuery}` });
 
+        setMovies([]);
+        setPage(1);
+
         // По превью дз запрос удаляется!!!
-        setMovieQuery('');
+        // setMovieQuery('');
     };
 
     useEffect(() => {
@@ -44,23 +49,32 @@ export default function MoviesPage() {
         }
 
         setStatus(Status.PENDING);
+        fetchMovies();
+    }, [searchMovie]);
 
+    const fetchMovies = () => {
+        console.log('page in fetchMovies:', page);
         theMovieDbAPI
-            .fetchMovieByName(searchMovie)
+            .fetchMovieByName(searchMovie, page)
             .then(({ results }) => {
                 if (results.length === 0) {
                     setStatus(Status.IDLE);
                     return;
                 }
 
-                setMovies(results);
+                setMovies(state => [...state, ...results]);
                 setStatus(Status.RESOLVED);
+                updatePage();
             })
             .catch(error => {
                 setError(error);
                 setStatus(Status.REJECTED);
             });
-    }, [searchMovie]);
+    };
+
+    const updatePage = () => {
+        setPage(state => state + 1);
+    };
 
     return (
         <>
@@ -77,12 +91,19 @@ export default function MoviesPage() {
             {status === Status.PENDING && <Loader />}
 
             {status === Status.RESOLVED && (
-                <MoviesList
-                    movies={movies}
-                    basicUrl={`${url}/`}
-                    location={location}
-                    label={`GO BACK to Search <${searchMovie}>`}
-                />
+                <InfiniteScroll
+                    dataLength={movies.length}
+                    next={fetchMovies}
+                    hasMore={true}
+                    loader={<Loader />}
+                >
+                    <MoviesList
+                        movies={movies}
+                        basicUrl={`${url}/`}
+                        location={location}
+                        label={`GO BACK to Search <${searchMovie}>`}
+                    />
+                </InfiniteScroll>
             )}
 
             {status === Status.REJECTED && <p>{error.message}</p>}

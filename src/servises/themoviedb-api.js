@@ -10,9 +10,9 @@ async function fetchWithErrorHandling(url = '') {
         : Promise.reject(new Error('Not found'));
 }
 
-export function fetchTrendingMovies() {
+export function fetchTrendingMovies(page) {
     return fetchWithErrorHandling(
-        `${BASE_URL}/trending/movie/day?api_key=${KEY}`,
+        `${BASE_URL}/trending/movie/day?api_key=${KEY}&page=${page}`,
     );
 }
 
@@ -22,11 +22,17 @@ export function fetchMovieById(movieId) {
     );
 }
 
-export function fetchMovieByName(movieQuery) {
+export function fetchMovieByName(movieQuery, page) {
     return fetchWithErrorHandling(
-        `${BASE_URL}/search/movie?api_key=${KEY}&language=en-US&query=${movieQuery}&page=1&include_adult=false`,
+        `${BASE_URL}/search/movie?api_key=${KEY}&language=en-US&query=${movieQuery}&page=${page}`,
     );
 }
+
+// export function fetchMovieByName(movieQuery, page) {
+//     return fetchWithErrorHandling(
+//         `${BASE_URL}/search/movie?api_key=${KEY}&language=en-US&query=${movieQuery}&page=${page}&include_adult=false`,
+//     );
+// }
 
 export function fetchMovieCast(movieId) {
     return fetchWithErrorHandling(
