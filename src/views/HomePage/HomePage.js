@@ -5,6 +5,9 @@ import s from './HomePage.module.css';
 import Loader from '../../components/Loader';
 import Status from '../../components/Status';
 import MoviesList from '../../components/MoviesList';
+import { ReactComponent as IconBtnUp } from '../../images/circle_up.svg';
+import ScrollToTop from 'react-scroll-up';
+
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 export default function HomePage() {
@@ -61,6 +64,10 @@ export default function HomePage() {
             )}
 
             {status === Status.REJECTED && <p>{error.message}</p>}
+
+            <ScrollToTop showUnder={300} style={{ bottom: 50, right: 10 }}>
+                <IconBtnUp width="60" height="60" fill="#CC0000" />
+            </ScrollToTop>
         </>
     );
 }
